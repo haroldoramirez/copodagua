@@ -3,6 +3,8 @@ package br.com.haroldo.copodagua
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,10 +28,27 @@ class MainActivity : AppCompatActivity() {
             saveGlass(GlassType.LARGE)
         }
 
+        refresh()
+
     }
 
     private fun saveGlass(glassType: GlassType) {
         preferences.save(today + glassType.value)
+
+        Snackbar.make(findViewById(android.R.id.content), R.string.undo, Snackbar.LENGTH_LONG)
+            .setAction(android.R.string.ok) {
+                preferences.save(today - glassType.value)
+                refresh()
+            }
+            .show()
+
+        refresh()
+    }
+
+    private fun refresh() {
+        val value = preferences.fetch()
+        today = value
+        findViewById<TextView>(R.id.txt_result).text = today.toString()
     }
 
 }

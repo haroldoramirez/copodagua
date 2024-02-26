@@ -20,9 +20,15 @@ class GlassPreferences(private val context: Context) {
         println("teste de save: $value")
 
         //Abrindo uma conexao de dados preferences com o NAME e a chave que eu salvar e PREFS_PREFIX e a data de hoje
-        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit {
-            putInt(PREFS_PREFIX + formatoData.format(Date()), value)
-        }
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit {
+                putInt(PREFS_PREFIX + formatoData.format(Date()), value)
+            }
+    }
+
+    fun fetch(): Int {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getInt(PREFS_PREFIX + formatoData.format(Date()), 0)
     }
 
 }
